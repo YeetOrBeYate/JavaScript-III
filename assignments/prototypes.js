@@ -36,12 +36,12 @@ GameObject.prototype.destroy = function(){
 */
 
   function CharacterStats(atri){
-    //so basically (yeet) I'm throwing the CharacterStats object AND the atri being passed to it up to GameObject
+    //so basically (yeet) I'm giving GameObject and its anythings to characterstats as atri
     GameObject.call(this, atri);
     this.healthPoints = atri.healthPoints
   }
 
-  //This gives CharacterStats
+  //This gives CharacterStats the destroy function
   CharacterStats.prototype = Object.create(GameObject.prototype);
 
   CharacterStats.prototype.takeDamage = function(){
@@ -60,6 +60,7 @@ GameObject.prototype.destroy = function(){
 */
 
   function Humanoid(attri){
+    //giving Humanoid characterstats atributes as attri
     CharacterStats.call(this, attri);
     this.team = attri.team,
     this.weapons = attri.weapons,
@@ -72,6 +73,10 @@ GameObject.prototype.destroy = function(){
   Humanoid.prototype.greet = function(){
     return `${this.name} offers a greeting in ${this.language}`;
   }
+
+
+
+
 
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -142,9 +147,84 @@ GameObject.prototype.destroy = function(){
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  console.log("-----------STRETCH BELOW--------------");
+
+
+
+
 
 
   // Stretch task:
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(attributes){
+    Humanoid.call(this, attributes);
+    this.battleType = attributes.battleType;
+    this.speed = attributes.speed;
+  }
+
+  Villain.prototype.evilAbility = function(){
+    this.healthPoints *= 2;
+  }
+
+  function Hero(atributes){
+    Humanoid.call(this, atributes);
+    this.battleType = atributes.battleType;
+    this.speed = atributes.speed;
+  }
+
+  Hero.prototype.heroAbility = function(){
+    this.speed *=6;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+    const henna = new Villain({
+      createdAt: new Date(),
+      dimensions: {
+        length: 6,
+        width: 6,
+        height: 6,
+      },
+      healthPoints: 20,
+      name: 'Yeet',
+      team: 'The Boys',
+      weapons: [
+        'Slatt!',
+      ],
+      language: 'Common Enlgiish',
+      battleType: "Long Distance",
+      speed: 10
+    });
+
+    const vic = new Hero({
+      createdAt: new Date(),
+      dimensions: {
+        length: 6,
+        width: 6,
+        height: 6,
+      },
+      healthPoints: 20,
+      name: 'Tracer',
+      team: 'Overwatch',
+      weapons: [
+        'pweew pweew!',
+      ],
+      language: 'british Enlgiish',
+      battleType: "Close Quarter Combat",
+      speed: 15
+    });
+
+
+    /////////////////////////////////////////////
+    console.log(`${henna.name} is a ${henna.battleType} type character`);
+    console.log(`${henna.name} had ${henna.healthPoints} healthPoints before the powerup!`);
+    henna.evilAbility();
+    console.log(`Now ${henna.name} has ${henna.healthPoints} healthPoints and is basically OP`);
+
+    console.log("But dont worry", `${vic.name} is here`);
+    console.log(`${vic.name} has a ${this.battleType} battle type.`);
+    console.log(`Her speed is ${vic.speed} before the powerup`);
+    vic.heroAbility();
+    console.log(`but now ${vic.name} has a speed of ${vic.speed} to quickly close the distance and overpower ${henna.name}`);
